@@ -1,5 +1,6 @@
 # Twitter API script
 # Takes a list of Tweet ids, accesses the Twitter API to get the Tweet text, and returns a CSV with the date, text, location, and hashtags.
+# The main functions that need to be run to use the script are the getTwitterDf function and the concatDfs function. The rest of the functions are used within the getTwitterDf function
 
 # Import the necessary libraries
 import tweepy
