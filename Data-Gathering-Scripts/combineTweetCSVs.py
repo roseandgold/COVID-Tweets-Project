@@ -16,7 +16,7 @@ def main():
     '''Concatenate all CSVs with Twitter information.'''
     
     directory = 'tweet_data/'
-    twitterDf = pd.DataFrame(columns = ['id', 'timestamp', 'text', 'hashtag', 'location', 'lang', 'sentimentScore'])
+    twitterDf = pd.DataFrame(columns = ['id', 'timestamp', 'text', 'hashtag', 'location', 'lang', 'sentimentScore', 'status'])
     
     for filename in os.listdir(directory):
         
