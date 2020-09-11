@@ -104,7 +104,7 @@ def parseTweet(tweetContent):
     return idVal, timestamp, text, hashtag, location, lang
 
 
-def getTwitterDf(tweetIdFile, tokenSecretFile, nextTweet = 0, numTweets = 200):
+def main(tweetIdFile, tokenSecretFile, nextTweet = 0, numTweets = 200):
     '''Create a dataframe which includes all the necessary Tweet information. The API searches for 100 tweet ids at
     one time.
     
@@ -168,27 +168,21 @@ def getTwitterDf(tweetIdFile, tokenSecretFile, nextTweet = 0, numTweets = 200):
     # Create the dataframe
     twitterDf = pd.DataFrame(tweetDict)
     
+    # Write the dataframe to a csv
+    directory = 'tweet_data/'
+    files = os.listdir(directory)
+    if len(files) == 0:
+           filename = directory + 'covidTweets_1_.csv'
+    else:
+      fileNum = str(int(files[-1].split('_')[1]) + 1)
+      fileName = dicrectory + 'covidTweets_' + fileNum + '_.csv'
+    twitterDf.to_csv(fileName)
+      
+    
     # Print out the next Tweet id need to start at and the number that are left
     rateLimitRemaining = api.rate_limit_status()['resources']['statuses']['/statuses/lookup']['remaining']
     print('Rate Limit Remaining: {}'.format(rateLimitRemaining)) # Print the number of searches left
     print('Next start: {}'.format((start + numIterations) * 100))
-    return twitterDf
 
-def concatDfs(listDf, csvName):
-    '''Concatenate all dataframes with Twitter information.
-    
-    Keyword arguments:
-    listDf -- a list of all dataframes
-    
-    Return:
-    None -- creates a CSV
-    
-    '''
-    twitterDf = listDf[0] # Create a dataframe with the first dataframe in the list
-    listDf = listDf[1:] # Remove the first dataframe from the list of dataframes
-    for df in listDf:
-        twitterDf = pd.concat([twitterDf, df])
-        
-    twitterDf = twitterDf.drop_duplicates(subset=['id']) # Remove any duplicate Tweets
-    twitterDf.to_csv(csvName, index=False) # Create the csv file
-    print('{} created with {} Tweets'.format(csvName, len(twitterDf)))
+if__name__ == "__main__"
+  main()
