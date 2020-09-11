@@ -34,25 +34,29 @@ def combined_samples():
 
         if filename.endswith(".csv"):
             day_sample = one_perc_sample(pd.read_csv(directory+filename, header=None,
-                                                    names=['tweet_id', 'sentiment_score']))
-            final_sample = final_sample.append(day_sample, ignore_index=True)
-            print(filename)
+                                                     names=['tweet_id', 'sentiment_score']))
 
-    final_sample = final_sample.drop_duplicates(subset='tweet_id')
-    return(final_sample)
+            final_sample = final_sample.append(day_sample, ignore_index=True)
+            print(filename, len(day_sample), len(final_sample))
+
+    # final_sample = final_sample.drop_duplicates(subset='tweet_id')
+
+    print(len(final_sample))
+    return final_sample
 
 
 def write_file(df):
     '''writes the final dataframe to csv'''
 
     # headers = ['tweet_id', 'sentiment_score']
-    df.to_csv('sampled_tweetids.csv') # header=headers)
+    df.to_csv('sampled_tweetids.csv', chunksize=25000)
 
 
 def main():
     '''Take samples, combine, and write files'''
 
     final_file = combined_samples()
+    print('writing file...')
     write_file(final_file)
     print('Done, daily samples taken. File length is {}'.format(len(final_file)))
     print(final_file.head())
