@@ -77,7 +77,6 @@ def getTweetIds(tweetIdFile):
     
     # Get a list of lists for the tweet ids. Each list contains 100 tweet ids
     tweetIds = tweetIdDf['tweet_id'].to_list()
-    total100s = len(tweetIds)//100 # Get the number of lists of 100 tweet ids
     remainder = len(tweetIds) % 100 # This is the number of tweet ids which will be in the last list
     startEnd = zip(range(0, len(tweetIds)-remainder, 100),range(100, len(tweetIds), 100)) # Create a zip of tuples with what index to start and stop at to create the list of 100 tweet ids 
     tweetIdsList = [tweetIds[i:x] for i,x in startEnd] # Create the list of lists
