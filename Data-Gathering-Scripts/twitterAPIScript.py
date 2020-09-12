@@ -205,7 +205,7 @@ def main(tweetIdFile, nextTweet, numTweets):
     # Write the dataframe to a csv
     directory = 'tweet_data/'
     currentDate = datetime.now().strftime("%Y_%m_%d-%I_%M-%S_%p")
-    fileName = 'covidTweets_' + currentDate + '.csv'
+    fileName = directory + 'covidTweets_' + currentDate + '.csv'
     twitterDf.to_csv(fileName, index=False)
       
     
