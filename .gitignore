@@ -1,0 +1,14 @@
+# git ignore file for COVID milestone project
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# data directories
+ieee_data/
+tweet_data/
+
+# csv files in general
+*.csv
+
+# tokens, keys, secrets, etc
+*.txt
