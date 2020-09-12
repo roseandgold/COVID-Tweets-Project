@@ -73,7 +73,7 @@ def getTweetIds(tweetIdFile):
     
     '''
     # Create a dataframe with the tweet ids and sentiment scores
-    tweetIdDf = pd.read_csv(tweetIdFile, header=None, names=['tweet_id', 'sentiment_score'])
+    tweetIdDf = pd.read_csv(tweetIdFile, names=['tweet_id', 'sentiment_score'])
     
     # Get a list of lists for the tweet ids. Each list contains 100 tweet ids
     tweetIds = tweetIdDf['tweet_id'].to_list()
