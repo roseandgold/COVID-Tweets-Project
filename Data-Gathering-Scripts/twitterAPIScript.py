@@ -28,6 +28,7 @@ import time
 from collections import defaultdict
 import sys
 import os
+from datetime import datetime
     
 def setupApi(tokenSecretFile):
     '''Sets up the Twitter API.
@@ -203,13 +204,8 @@ def main(tweetIdFile, nextTweet, numTweets):
     
     # Write the dataframe to a csv
     directory = 'tweet_data/'
-    files = os.listdir(directory)
-
-    if len(files) == 0:
-        fileName = directory + 'covidTweets_1_.csv'
-    else:
-      fileNum = str(int(files[-1].split('_')[1]) + 1)
-      fileName = directory + 'covidTweets_' + fileNum + '_.csv'
+    currentDate = datetime.now().strftime("%Y_%m_%d-%I_%M-%S_%p")
+    fileName = 'covidTweets_' + currentDate + '.csv'
     twitterDf.to_csv(fileName, index=False)
       
     
