@@ -23,6 +23,7 @@ Coronavirus Tweet Analysis Project
 import tweepy
 import json
 import pandas as pd
+import numpy as np
 import time
 from collections import defaultdict
 import sys
@@ -73,7 +74,8 @@ def getTweetIds(tweetIdFile):
     
     '''
     # Create a dataframe with the tweet ids and sentiment scores
-    tweetIdDf = pd.read_csv(tweetIdFile, names=['tweet_id', 'sentiment_score'])
+    tweetIdDf = pd.read_csv(tweetIdFile, usecols = ['tweet_id', 'sentiment_score'],
+        dtype={'tweet_id': np.int64}, float_precision = 'high')
     
     # Get a list of lists for the tweet ids. Each list contains 100 tweet ids
     tweetIds = tweetIdDf['tweet_id'].to_list()
