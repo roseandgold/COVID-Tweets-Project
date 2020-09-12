@@ -12,3 +12,6 @@ tweet_data/
 
 # tokens, keys, secrets, etc
 *.txt
+
+# DS_store
+.DS_store
