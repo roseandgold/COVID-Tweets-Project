@@ -168,36 +168,31 @@ def main(tweetIdFile, nextTweet, numTweets):
     else:
         numIterations = int(numTweets/100) # This is the number of groups of 100 tweet ids to search
         tweets = tweetIds[start:start + numIterations] # Get only the groups of tweets needed to process
-    try:
-        for idx, tweetGroup in enumerate(tweets):
-            if idx % 100 == 0:
-                rateLimitRemaining = api.rate_limit_status()['resources']['statuses']['/statuses/lookup']['remaining'] # Get the remaining rate limit
-                print('Rate Limit Remaining: {}'.format(rateLimitRemaining)) # Print the rate limit remaining every 100 searches
-            
-            # Access the API and get the Tweet information
-            tweetJson = api.statuses_lookup(tweetGroup, tweet_mode='extended') # Gets the json for all 100 tweets in the tweetGroup
-            try: 
-                # Iterate through each tweet json to get the information
-                for tweet in tweetJson:
-                    idVal, timestamp, text, hashtags, location, lang, status = parseTweet(tweet)
-                    tweetDict['id'].append(str(idVal))
-                    tweetDict['timestamp'].append(timestamp)
-                    tweetDict['text'].append(text)
-                    tweetDict['hashtag'].append(hashtags)
-                    tweetDict['location'].append(location)
-                    tweetDict['lang'].append(lang)
-                    tweetDict['status'].append(status)
-                    tweetDict['sentimentScore'].append(sentimentDict[idVal])
-
-            except tweepy.TweepError as e:
-                errorMessage = e.args[0][0]['message']
-                errorCode = e.args[0][0]['code']
-                print('Tweet ID {} had the following error: {} Error Code: {}'.format(idVal, errorMessage, errorCode))
-                continue
+    for idx, tweetGroup in enumerate(tweets):
+        if idx % 100 == 0:
+            rateLimitRemaining = api.rate_limit_status()['resources']['statuses']['/statuses/lookup']['remaining'] # Get the remaining rate limit
+            print('Rate Limit Remaining: {}'.format(rateLimitRemaining)) # Print the rate limit remaining every 100 searches
         
-    except KeyboardInterrupt:
-        print('Next start: {}'.format((start + idx) * 100)) # Where to start the next time run the program. There may be duplicates included but duplicates are removed when all dataframes concatenated at the end.
-        return pd.DataFrame(tweetDict)
+        # Access the API and get the Tweet information
+        tweetJson = api.statuses_lookup(tweetGroup, tweet_mode='extended') # Gets the json for all 100 tweets in the tweetGroup
+        try: 
+            # Iterate through each tweet json to get the information
+            for tweet in tweetJson:
+                idVal, timestamp, text, hashtags, location, lang, status = parseTweet(tweet)
+                tweetDict['id'].append(str(idVal))
+                tweetDict['timestamp'].append(timestamp)
+                tweetDict['text'].append(text)
+                tweetDict['hashtag'].append(hashtags)
+                tweetDict['location'].append(location)
+                tweetDict['lang'].append(lang)
+                tweetDict['status'].append(status)
+                tweetDict['sentimentScore'].append(sentimentDict[idVal])
+
+        except tweepy.TweepError as e:
+            errorMessage = e.args[0][0]['message']
+            errorCode = e.args[0][0]['code']
+            print('Tweet ID {} had the following error: {} Error Code: {}'.format(idVal, errorMessage, errorCode))
+            continue
 
     # Create the dataframe
     twitterDf = pd.DataFrame(tweetDict)
