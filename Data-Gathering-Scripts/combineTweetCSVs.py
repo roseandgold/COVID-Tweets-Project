@@ -25,7 +25,6 @@ def main():
             twitterDf = twitterDf.append(df, ignore_index=True)
             print(directory + filename, len(df))
         
-    twitterDf = twitterDf.drop_duplicates(subset=['id']) # Remove any duplicate Tweets
     twitterDf.to_csv('allTweets.csv', index=False) # Create the csv file
     print('{} created with {} Tweets'.format('allTweets.csv', len(twitterDf)))
 
