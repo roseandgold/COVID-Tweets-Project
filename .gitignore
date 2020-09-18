@@ -6,6 +6,7 @@
 # data directories
 ieee_data/
 tweet_data/
+case_data/
 
 # csv files in general
 *.csv
