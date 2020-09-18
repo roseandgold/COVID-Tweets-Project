@@ -62,7 +62,7 @@ def main():
     allTweets['text'] = allTweets['text'].str.lower().str.encode('ascii', 'ignore').str.decode('ascii')
     
     # Remove all links and multiple hashes for one hashtagged word
-    allTweets = allTweets.replace({'text': {r"http\S+": "", '#{2,}': "#"}}, regex=True)
+    allTweets = allTweets.replace({'text': {r"http\S+": "", '#{1,}': ""}}, regex=True)
     
     # Add the tokenized words column
     allTweets['tokenized'] = allTweets['text'].apply(tokenizeLemmatizeTweets)
