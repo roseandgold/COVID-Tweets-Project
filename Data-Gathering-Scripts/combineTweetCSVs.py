@@ -25,6 +25,9 @@ def main():
             twitterDf = twitterDf.append(df, ignore_index=True)
             print(directory + filename, len(df))
         
+    # Sort the tweets by timestamp
+    twitterDf = twitterDf.sort_values('timestamp')
+    
     twitterDf.to_csv('allTweets.csv', index=False) # Create the csv file
     print('{} created with {} Tweets'.format('allTweets.csv', len(twitterDf)))
 
