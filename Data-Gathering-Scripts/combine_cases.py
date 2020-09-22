@@ -50,8 +50,24 @@ def combined_samples():
     return combined_cases
 
 
+def write_file(df):
+    '''writes the final dataframe to csv'''
+
+    # headers = ['tweet_id', 'sentiment_score']
+    df.to_csv('covid_case_data.csv', chunksize=25000)
+
+
 def main():
-    pass
+    '''Combines cases, processes, then writes to file'''
+
+    allcases = combined_samples()
+    print('all cases combined')
+
+    final = process_cases(allcases)
+    print('cases processed and date set as index')
+    print('writing file...')
+    write_file(final)
+    print('Done')
 
 
 if __name__ == "__main__":
