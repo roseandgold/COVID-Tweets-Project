@@ -1,12 +1,16 @@
 '''
-Process raw Tweets by tokenizing, lemmatizing, and making them into
-three word ngrams.
+Processes the raw Tweets in allTweets.csv by tokenizing, 
+lemmatizing, and making them into three word ngrams.
 
 Returns tokenizedTweets.csv which contains the Tweet id number, ngrams, and date.
 
 If you have not installed the below packages they must be installed
     nltk.download('stopwords')
     nltk.download('wordnet')
+
+Laura Stagnaro, Ian Byrne
+SIADS 591 & 592 Milestone I
+Coronavirus Tweet Analysis Project
 '''
 
 import pandas as pd
@@ -70,6 +74,9 @@ def main():
     # Reduce the dataframe and explode the tokens to their own rows
     allTweets = allTweets[['id', 'date', 'tokenized']]
     allTweets = allTweets.explode('tokenized')
+
+    # Sort the dataframe by date
+    allTweets = allTweets.sort_values('date')
     
     # Create the csv
     allTweets.to_csv('tokenizedTweets.csv', index = False)
