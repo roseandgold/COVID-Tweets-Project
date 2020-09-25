@@ -42,8 +42,37 @@ def main(covidFile):
     # Change the date to datetime object to change date format in csv
     covid['Date'] = pd.to_datetime(covid['Date'])
 
+    # Filter down to the necessary dates
+    covid = covid[(covid['Date'] >= '2020-03-01') & (covid['Date'] <= '2020-09-01')]
+    covid['Date'] = covid['Date'].dt.date
+
     # Groupby date to get the total number of covid cases per day
     covid = covid.groupby(['Date', 'Country']).agg({'Confirmed': sum}).reset_index()
+
+    # Add what covid phase the count falls into
+    # Create a list of dates for each phase
+    phase1Dates = list(pd.date_range('2020-03-01', '2020-04-07', freq = 'D'))
+    phase2Dates = list(pd.date_range('2020-04-08', '2020-05-12', freq = 'D'))
+    phase3Dates = list(pd.date_range('2020-05-13', '2020-07-28', freq = 'D'))
+    phase4Dates = list(pd.date_range('2020-07-29', '2020-09-01', freq= 'D'))
+
+    # Put the list of dates into one list
+    allDates = phase1Dates + phase2Dates + phase3Dates + phase4Dates
+
+    # Create lists with the phase labels
+    phase1 = ['phase 1'] * len(phase1Dates)
+    phase2 = ['phase 2'] * len(phase2Dates)
+    phase3 = ['phase 3'] * len(phase3Dates)
+    phase4 = ['phase 4'] * len(phase4Dates)
+
+    # Put the list of labels into one list
+    allPhases = phase1 + phase2 + phase3 + phase4
+
+    # Create a dictionary with the phases and dates
+    phaseDict = dict(zip(allDates, allPhases))
+
+    # Create the phase label column
+    covid['covid phase'] = covid['Date'].map(phaseDict)
 
     # Write the dataframe to a csv
     covid.to_csv('covidCountsCountryDay.csv', index=False)
