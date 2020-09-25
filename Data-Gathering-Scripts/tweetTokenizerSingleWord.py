@@ -1,8 +1,12 @@
 '''
-Processes the raw Tweets in allTweets.csv by tokenizing, 
+Processes the raw Tweets in a csv file by tokenizing, 
 lemmatizing, and making them into single words.
 
-Returns tokenizedTweetsSingleWord.csv which contains the Tweet id number, words, and date.
+Keyword arguments:
+tweetFile -- filepath which contains all the Tweets
+
+Output:
+ tokenizedTweetsSingleWord.csv -- contains the Tweet id number, words, and date.
 
 If you have not installed the below packages they must be installed
     nltk.download('stopwords')
@@ -21,6 +25,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import TweetTokenizer
 from nltk.corpus import stopwords
 from nltk.util import ngrams
+import sys
 
 
 def tokenizeLemmatizeTweets(tweet):
@@ -43,17 +48,17 @@ def tokenizeLemmatizeTweets(tweet):
     # Some of the below code was found here: https://www.youtube.com/watch?v=7N_2OsLXFlA&list=PLmcBskOCOOFW1SNrz6_yzCEKGvh65wYb9&index=19
     # Create variables that store the punctuation and stopwords to be removed
     punctuation = list(string.punctuation)
-    swords = stopwords.words('english') + punctuation + ['rt', 'via', '...', 'u', 'ur', 'r', 'covid', 'coronavirus', 'covid19']
+    swords = stopwords.words('english') + punctuation + ['rt', 'via', '...', 'u', 'ur', 'r', 'n', 'covid', 'coronavirus', 'covid19', 'corona']
 
     # Create a list of lemmatized words, remove punctuation, stopwords and numbers
-    tokenList = [lemmatizer.lemmatize(word) for word in tokenized if word not in swords and not word.isdigit()]
+    tokenList = [lemmatizer.lemmatize(word) for word in tokenized if lemmatizer.lemmatize(word) not in swords and not word.isdigit()]
     
     return tokenList
 
-def main():
+def main(tweetFile):
     
     # Get the file
-    allTweets = pd.read_csv('allTweets.csv')
+    allTweets = pd.read_csv(tweetFile, usecols = ['id', 'timestamp', 'text'])
     allTweets = allTweets.drop_duplicates()
     
     # Change the timestamp to datetime and create a date column
@@ -65,17 +70,43 @@ def main():
     allTweets['text'] = allTweets['text'].str.lower().str.encode('ascii', 'ignore').str.decode('ascii')
     
     # Remove all links and multiple hashes for one hashtagged word
-    allTweets = allTweets.replace({'text': {r"http\S+": "", '#{1,}': ""}}, regex=True)
+    allTweets = allTweets.replace({'text': {r"http\S+": "", '#{1,}': "", '\n':""}}, regex=True)
     
     # Add the tokenized words column
     allTweets['tokenized'] = allTweets['text'].apply(tokenizeLemmatizeTweets)
     
     # Reduce the dataframe and explode the tokens to their own rows
-    allTweets = allTweets[['id', 'date', 'tokenized']]
+    allTweets = allTweets[['id','date', 'tokenized']]
     allTweets = allTweets.explode('tokenized')
 
-    # Sort the dataframe by date
-    allTweets = allTweets.sort_values('date')
+    # Aggregate all the words by date
+    allTweets = allTweets.groupby(['date', 'tokenized']).count().reset_index().sort_values('date')
+    allTweets.rename(columns = {'id': 'counts'}, inplace = True)
+
+    # Add what covid phase the word fell into
+    # Create a list of dates for each phase
+    phase1Dates = list(pd.date_range('2020-03-01', '2020-04-07', freq = 'D'))
+    phase2Dates = list(pd.date_range('2020-04-08', '2020-05-12', freq = 'D'))
+    phase3Dates = list(pd.date_range('2020-05-13', '2020-07-28', freq = 'D'))
+    phase4Dates = list(pd.date_range('2020-07-29', '2020-09-01', freq= 'D'))
+
+    # Put the list of dates into one list
+    allDates = phase1Dates + phase2Dates + phase3Dates + phase4Dates
+
+    # Create lists with the phase labels
+    phase1 = ['phase 1'] * len(phase1Dates)
+    phase2 = ['phase 2'] * len(phase2Dates)
+    phase3 = ['phase 3'] * len(phase3Dates)
+    phase4 = ['phase 4'] * len(phase4Dates)
+
+    # Put the list of labels into one list
+    allPhases = phase1 + phase2 + phase3 + phase4
+
+    # Create a dictionary with the phases and dates
+    phaseDict = dict(zip(allDates, allPhases))
+
+    # Create the phase label column
+    allTweets['covid phase'] = allTweets['date'].map(phaseDict)
     
     # Create the csv
     allTweets.to_csv('tokenizedTweetsSingleWord.csv', index = False)
@@ -84,4 +115,4 @@ def main():
     print(allTweets.head())
     
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
