@@ -1,8 +1,12 @@
 '''
-Processes the raw Tweets in allTweets.csv by tokenizing, 
-lemmatizing, and making them into three word ngrams.
+Processes the raw Tweets in a csv by tokenizing, 
+lemmatizing, and making them into bi-grams.
 
-Returns tokenizedTweets.csv which contains the Tweet id number, ngrams, and date.
+Keyword Arguments:
+tweetData -- the file which contains all the Tweets
+
+Output: 
+tokenizedTweets.csv  -- contains the count for each bi-gram per day.
 
 If you have not installed the below packages they must be installed
     nltk.download('stopwords')
@@ -21,16 +25,17 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import TweetTokenizer
 from nltk.corpus import stopwords
 from nltk.util import ngrams
+import sys
 
 
 def tokenizeLemmatizeTweets(tweet):
-    '''Cleans the raw Tweets and produces 3 word ngrams of the Tweets.
+    '''Cleans the raw Tweets and produces bi-grams of the Tweets.
     
     Keyword argument:
     tweet -- the Tweet to be processed
     
     Return:
-    ngramList -- a list of three word ngrams
+    ngramList -- a list of bi-grams
 
     ''' 
     # Create the tokenizer and lemmatizer
@@ -43,18 +48,18 @@ def tokenizeLemmatizeTweets(tweet):
     # Some of the below code was found here: https://www.youtube.com/watch?v=7N_2OsLXFlA&list=PLmcBskOCOOFW1SNrz6_yzCEKGvh65wYb9&index=19
     # Create variables that store the punctuation and stopwords to be removed
     punctuation = list(string.punctuation)
-    swords = stopwords.words('english') + punctuation + ['rt', 'via', '...', 'u', 'ur']
+    swords = stopwords.words('english') + punctuation + ['rt', 'via', '...', '..', 'u', 'ur', 'r', 'n']
 
     # Create a list of lemmatized words, remove punctuation, stopwords and numbers
-    tokenList = [lemmatizer.lemmatize(word) for word in tokenized if word not in swords and not word.isdigit()]
-    ngramList = [ngram for ngram in ngrams(tokenList, 3)]
+    tokenList = [lemmatizer.lemmatize(word) for word in tokenized if lemmatizer.lemmatize(word) not in swords and not word.isdigit()]
+    ngramList = [ngram for ngram in ngrams(tokenList, 2)]
     
     return ngramList
 
-def main():
+def main(tweetFile):
     
     # Get the file
-    allTweets = pd.read_csv('allTweets.csv')
+    allTweets = pd.read_csv(tweetFile, usecols = ['id','timestamp', 'text'])
     allTweets = allTweets.drop_duplicates()
     
     # Change the timestamp to datetime and create a date column
@@ -72,11 +77,37 @@ def main():
     allTweets['tokenized'] = allTweets['text'].apply(tokenizeLemmatizeTweets)
     
     # Reduce the dataframe and explode the tokens to their own rows
-    allTweets = allTweets[['id', 'date', 'tokenized']]
+    allTweets = allTweets[['id','date', 'tokenized']]
     allTweets = allTweets.explode('tokenized')
+    
+    # Groupby the date and ngram to get the counts
+    allTweets = allTweets.groupby(['date', 'tokenized']).count().reset_index().sort_values('date')
+    allTweets.rename(columns = {'id': 'counts'}, inplace = True)
 
-    # Sort the dataframe by date
-    allTweets = allTweets.sort_values('date')
+    # Add what covid phase the bigram fell into
+    # Create a list of dates for each phase
+    phase1Dates = list(pd.date_range('2020-03-01', '2020-04-07', freq = 'D'))
+    phase2Dates = list(pd.date_range('2020-04-08', '2020-05-12', freq = 'D'))
+    phase3Dates = list(pd.date_range('2020-05-13', '2020-07-28', freq = 'D'))
+    phase4Dates = list(pd.date_range('2020-07-29', '2020-09-01', freq= 'D'))
+
+    # Put the list of dates into one list
+    allDates = phase1Dates + phase2Dates + phase3Dates + phase4Dates
+
+    # Create lists with the phase labels
+    phase1 = ['phase 1'] * len(phase1Dates)
+    phase2 = ['phase 2'] * len(phase2Dates)
+    phase3 = ['phase 3'] * len(phase3Dates)
+    phase4 = ['phase 4'] * len(phase4Dates)
+
+    # Put the list of labels into one list
+    allPhases = phase1 + phase2 + phase3 + phase4
+
+    # Create a dictionary with the phases and dates
+    phaseDict = dict(zip(allDates, allPhases))
+
+    # Create the phase label column
+    allTweets['covid phase'] = allTweets['date'].map(phaseDict)
     
     # Create the csv
     allTweets.to_csv('tokenizedTweets.csv', index = False)
@@ -85,4 +116,4 @@ def main():
     print(allTweets.head())
     
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
