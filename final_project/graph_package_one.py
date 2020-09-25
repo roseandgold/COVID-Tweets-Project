@@ -28,6 +28,7 @@ def read_day_counts():
 
 def get_dates(df):
     '''Retrieves the dates in string form for drop down'''
+
     dates = list(df['string_date'].unique())
     dates.sort()
 
@@ -35,7 +36,8 @@ def get_dates(df):
 
 
 def select_date(df, date):
-    """Filters dataframe down to specific date"""
+    """Filters dataframe down to specific date
+    - used within the daily_top10_barchart() function"""
 
     df_day = df.loc[df['date'] == date]
 
@@ -51,7 +53,7 @@ def daily_top10_barchart(df, date):
     # retrieve the top 10 words
     data2 = data.nlargest(10, 'counts')
 
-    # create barchart
+    # create barchart TODO: add better axis labels and themes
     barchart = px.bar(data_frame=data2,
                       x='tokenized',
                       y='counts',
@@ -83,6 +85,7 @@ def get_top100(df):
 
 
 def words_linechart_one(df):
+
     # create word data frames
     main_words = ['pandemic', 'virus', 'lockdown']
     top_words = get_top100(df)
