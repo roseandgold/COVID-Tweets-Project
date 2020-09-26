@@ -84,9 +84,10 @@ def get_top100(df):
     return top1
 
 
-def words_linechart_one(df):
+def words_linechart_one():
 
     # create word data frames
+    df = read_day_counts()
     main_words = ['pandemic', 'virus', 'lockdown']
     top_words = get_top100(df)
     top_words_cum = top_words[top_words['tokenized'].isin(main_words)]
@@ -157,9 +158,10 @@ def get_top10_words(df):
     return final
 
 
-def words_linechart_two(df):
+def words_linechart_two():
 
     # create word data frames
+    df = read_day_counts()
     main_words = ['pandemic', 'people', 'case', 'trump', 'death', 'mask']
     top_words = get_top100(df)
     top_words_cum = top_words[top_words['tokenized'].isin(main_words)]
