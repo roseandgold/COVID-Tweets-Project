@@ -66,7 +66,9 @@ def daily_top10_barchart(df, date):
     pio.show(barchart)
 
 
-def get_top100(df):
+def get_top100():
+
+    df = read_day_counts()
 
     # get top 100 most mentioned words
     grouped = df.groupby('tokenized', as_index=False).sum()
@@ -78,7 +80,7 @@ def get_top100(df):
 
     # take top 100 and add a cumulative sum columns
     top1 = top.groupby(['tokenized', 'date']).sum()
-    top1['cumsum'] = top1.groupby(level=0).cumsum()
+    top1['cumsum'] = top1.groupby(level=0)['counts'].cumsum()
     top1.reset_index(inplace=True)
 
     return top1
@@ -87,9 +89,8 @@ def get_top100(df):
 def words_linechart_one():
 
     # create word data frames
-    df = read_day_counts()
     main_words = ['pandemic', 'virus', 'lockdown']
-    top_words = get_top100(df)
+    top_words = get_top100()
     top_words_cum = top_words[top_words['tokenized'].isin(main_words)]
 
     covid = pd.read_csv('covidTimeSeries.csv')
@@ -161,9 +162,8 @@ def get_top10_words(df):
 def words_linechart_two():
 
     # create word data frames
-    df = read_day_counts()
     main_words = ['pandemic', 'people', 'case', 'trump', 'death', 'mask']
-    top_words = get_top100(df)
+    top_words = get_top100()
     top_words_cum = top_words[top_words['tokenized'].isin(main_words)]
 
     covid = pd.read_csv('covidTimeSeries.csv')
