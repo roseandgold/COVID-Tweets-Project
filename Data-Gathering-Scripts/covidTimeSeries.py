@@ -59,7 +59,7 @@ def main(covidFile, allTweetsFile):
     covid = covid.groupby('Date').agg({'Confirmed':sum}).reset_index()
 
     # Get the total number of new cases each day
-    covid['New Cases'] = covid['Confirmed'].diff()
+    covid['New Cases'] = np.abs(covid['Confirmed'].diff(-1))
 
     # Get the 7 day rolling average for new cases
     covid['New Cases 7 Day Rolling Average'] = covid['New Cases'].rolling(window=7).mean().round()
