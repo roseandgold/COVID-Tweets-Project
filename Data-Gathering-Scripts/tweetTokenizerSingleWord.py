@@ -1,6 +1,6 @@
 '''
 Processes the raw Tweets in a csv file by tokenizing, 
-lemmatizing, and making them into single words.
+lemmatizing, and creating a row for each word in a tweet.
 
 Keyword arguments:
 tweetFile -- filepath which contains all the Tweets
@@ -29,13 +29,13 @@ import sys
 
 
 def tokenizeLemmatizeTweets(tweet):
-    '''Cleans the raw Tweets and produces 3 word ngrams of the Tweets.
+    '''Cleans the raw tweets and produces a list of single words from the tweets.
     
     Keyword argument:
-    tweet -- the Tweet to be processed
+    tweet -- the tweet to be processed
     
     Return:
-    ngramList -- a list of three word ngrams
+    tokenList -- a list of single words
 
     ''' 
     # Create the tokenizer and lemmatizer
@@ -45,8 +45,9 @@ def tokenizeLemmatizeTweets(tweet):
     # Tokenize the Tweet
     tokenized = tokenizer.tokenize(tweet)
     
-    # Some of the below code was found here: https://www.youtube.com/watch?v=7N_2OsLXFlA&list=PLmcBskOCOOFW1SNrz6_yzCEKGvh65wYb9&index=19
     # Create variables that store the punctuation and stopwords to be removed
+    # The code to create the swords list and tokenList was found here: https://www.youtube.com/watch?v=7N_2OsLXFlA&list=PLmcBskOCOOFW1SNrz6_yzCEKGvh65wYb9&index=19
+    # The code was modified by including other words to remove and adding the lemmatization function
     punctuation = list(string.punctuation)
     swords = stopwords.words('english') + punctuation + ['rt', 'via', '...', 'u', 'ur', 'r', 'n', 'covid', 'coronavirus', 'covid19', 'corona']
 
@@ -66,10 +67,11 @@ def main(tweetFile):
     allTweets['date']  = allTweets['timestamp'].dt.date
     
     # Change all tweets to lowercase and remove any non-ASCII characters
-    # Found code from: https://stackoverflow.com/questions/36340627/remove-non-ascii-characters-from-pandas-column
+    # Found code for igonring non-ascii characters: https://stackoverflow.com/questions/36340627/remove-non-ascii-characters-from-pandas-column
+    # modified the code by adding str.lower()
     allTweets['text'] = allTweets['text'].str.lower().str.encode('ascii', 'ignore').str.decode('ascii')
     
-    # Remove all links and multiple hashes for one hashtagged word
+    # Remove all links and hashtag symbols
     allTweets = allTweets.replace({'text': {r"http\S+": "", '#{1,}': "", '\n':""}}, regex=True)
     
     # Add the tokenized words column
