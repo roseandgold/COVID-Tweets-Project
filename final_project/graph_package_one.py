@@ -1,8 +1,8 @@
 '''Package of functions designed to be imported into a jupyter notebook
-and generate one liner graphs'''
+and generate one liner graphs for the SIADS 591/592 Milestone Course
+by Ian Byrne and Laura Stagnaro. '''
 
 import pandas as pd
-import plotly
 import plotly.express as px
 import plotly.io as pio
 import plotly.graph_objects as go
@@ -67,6 +67,8 @@ def daily_top10_barchart(df, date):
 
 
 def get_top100():
+    '''Function that creates a dataframe with the top 100 most
+    mentioned words'''
 
     df = read_day_counts()
 
@@ -84,6 +86,38 @@ def get_top100():
     top1.reset_index(inplace=True)
 
     return top1
+
+
+def top10_perc_change():
+    '''Creates a dataframe with percentage change by
+    day of the most representative words in the top
+    20 mentioned words.'''
+
+    top100 = get_top100()
+    top100.head()
+
+    top_words = [
+        'pandemic', 'ha', 'people', 'wa', 'case', 'trump', 'death', 'new',
+        'mask', 'day', 'one', 'get', 'virus', 'like', 'time', 'lockdown',
+        'state', 'say', 'need', 'health'
+    ]
+
+    top_20 = top100[top100['tokenized'].isin(top_words)]
+    # top_20['scaled_change'] = np.log10(top_20['confirmed'])
+    top20_pivoted = top_20.pivot(index='date',
+                                 columns='tokenized',
+                                 values='counts')
+
+    perc_change = top20_pivoted.pct_change()
+    cols_to_drop = [
+        'ha', 'wa', 'new', 'day', 'one', 'get', 'like', 'time', 'say', 'need'
+    ]
+
+    perc_change.drop(columns=cols_to_drop, inplace=True)
+    # perc_change.reset_index(inplace=True)
+    perc_change.drop(perc_change.index[[0, 1]], inplace=True)
+
+    return perc_change
 
 
 def words_linechart_one():
@@ -150,7 +184,7 @@ def words_linechart_one():
 
 
 def get_top10_words(df):
-    '''grabs the top 5 words over time during the pandemic'''
+    '''grabs the top 10 words over time during the pandemic'''
 
     data = df.groupby('tokenized', as_index=False).sum()
     final = data.nlargest(10, 'counts')
@@ -241,4 +275,29 @@ def words_linechart_two():
     fig.update_yaxes(title_text="<b>Mention Counts</b>", secondary_y=False)
     fig.update_yaxes(title_text="<b>COVID Case totals</b>", secondary_y=True)
 
+    fig.show()
+
+
+def heatmap():
+    '''Creates a heatmap of the top 10 most mentioned words'''
+
+    pc = top10_perc_change()
+
+    adjusted_df = pc.reset_index()
+
+    adjusted_df = adjusted_df[adjusted_df['date'] != '2020-04-18']
+
+    adjusted_df.set_index('date', inplace=True)
+    # adjusted_df.head()
+
+    fig = px.imshow(adjusted_df,
+                    zmin=-1,
+                    zmax=1,
+                    labels=dict(x="Percent Change of Most Mentioned Words",
+                                y="Date",
+                                color='% Change'),
+                    width=900,
+                    height=1100)
+
+    fig.update_xaxes(side="top")
     fig.show()
