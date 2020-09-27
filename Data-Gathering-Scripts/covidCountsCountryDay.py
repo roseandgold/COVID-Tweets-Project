@@ -5,7 +5,8 @@ format and and aggregates the confirmed number of cases by country for each day.
 Keyword arguments:
 covidFile -- the filepath for the Johns Hopkins time series data
 
-Outputs a CSV file with date, country, number of confirmed cases.
+Outputs a CSV file with date, country, number of confirmed cases and 
+COVID phase label.
 
 Laura Stagnaro, Ian Byrne
 SIADS 591 & 592 Milestone I
