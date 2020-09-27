@@ -1,5 +1,5 @@
 '''
-Processes the raw Tweets in a csv by tokenizing, 
+Processes the raw tweets in a csv by tokenizing, 
 lemmatizing, and making them into bi-grams.
 
 Keyword Arguments:
@@ -29,7 +29,7 @@ import sys
 
 
 def tokenizeLemmatizeTweets(tweet):
-    '''Cleans the raw Tweets and produces bi-grams of the Tweets.
+    '''Cleans the raw Tweets and produces bi-grams of the tweets.
     
     Keyword argument:
     tweet -- the Tweet to be processed
@@ -45,8 +45,10 @@ def tokenizeLemmatizeTweets(tweet):
     # Tokenize the Tweet
     tokenized = tokenizer.tokenize(tweet)
     
-    # Some of the below code was found here: https://www.youtube.com/watch?v=7N_2OsLXFlA&list=PLmcBskOCOOFW1SNrz6_yzCEKGvh65wYb9&index=19
     # Create variables that store the punctuation and stopwords to be removed
+    # The code to create the swords list and tokenList was found here: https://www.youtube.com/watch?v=7N_2OsLXFlA&list=PLmcBskOCOOFW1SNrz6_yzCEKGvh65wYb9&index=19
+    # The code was modified by including other words to remove, adding the lemmatization function
+    # and creating ngrams
     punctuation = list(string.punctuation)
     swords = stopwords.words('english') + punctuation + ['rt', 'via', '...', '..', 'u', 'ur', 'r', 'n']
 
@@ -67,7 +69,8 @@ def main(tweetFile):
     allTweets['date']  = allTweets['timestamp'].dt.date
     
     # Change all tweets to lowercase and remove any non-ASCII characters
-    # Found code from: https://stackoverflow.com/questions/36340627/remove-non-ascii-characters-from-pandas-column
+    # Found code for igonring non-ascii characters: https://stackoverflow.com/questions/36340627/remove-non-ascii-characters-from-pandas-column
+    # modified the code by adding str.lower()
     allTweets['text'] = allTweets['text'].str.lower().str.encode('ascii', 'ignore').str.decode('ascii')
     
     # Remove all links and multiple hashes for one hashtagged word
