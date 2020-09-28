@@ -11,11 +11,12 @@ Authors: Laura Stagnaro and Ian Byrne
 ## Data Manipulation Stages
 - Manually downloaded the Twitter ID CSV files and Zip files
 - Grab a one percent sample for each day (each CSV represented one day of Tweets) one_perc_sample.py
-    - This script should be in a directory containing a another directory named 'ieee_data/' as that is the name of the directory it is currently written to loop through.
+    - This script should be in a directory containing another directory named 'ieee_data/' as that is the name of the directory it is currently written to loop through.
 - Retrieve the full tweets from the Twitter API using the combined Tweet IDs with twitterAPIScript.py
+    - This script should be in a directory containing another directory named 'tweet_data'. All tweet CSVs will output to this directory.
     - For this to work correctly the user will need to have Twitter Developer API credentials. Pass the script the name of the file with the Tweet IDs that was created with one_perc_sample.py, the start index (0 on the first run), and how many ID's you want to populate on that run. After the run is complete the script will output where it left off to be passed as the start argument on the next run. 
 - Combine all of the tweet data into one CSV combineTweetCSVs.py
-    - Once you have populated all of the Tweet IDs please place those files in a directory called "tweet_data/". After that is done simply running this script should loop through the directory and combine all of the CSVs.
+    - This script will loop through the 'tweet_data' directory and combine all of the CSVs.
 - Grab the bi-grams for each tweet tweetTokenizer.py
     - Once you have the combined tweet file, you can run this script with the tweet file as argument to create bi-grams of the tweet body. 
 - Tokenize each tweet to get individual words tweetTokenizerSingleWord.py
