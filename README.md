@@ -11,7 +11,9 @@ Authors: Laura Stagnaro and Ian Byrne
 ## Data Manipulation Stages
 - Manually downloaded the Twitter ID CSV files and Zip files
 - Grab a one percent sample for each day (each CSV represented one day of Tweets) one_perc_sample.py
-- Retrieve the full tweets from the Twitter API with twitterAPIScript.py
+    - This script should be in a directory containing a another directory named 'ieee_data/' as that is the name of the directory it is currently written to loop through.
+- Retrieve the full tweets from the Twitter API using the combined Tweet IDs with twitterAPIScript.py
+    - For this to work correctly the user will need to have Twitter Developer API credentials. Pass the script the name of the file with the Tweet IDs that was created with one_perc_sample.py, the start index (0 on the first run), and how many ID's you want to populate on that run. After the run is complete the script will output where it left off to be passed as the start argument on the next run. 
 - Combine all of the tweet data into one CSV combineTweetCSVs.py
 - Grab the bi-grams for each tweet tweetTokenizer.py
 - Tokenize each tweet to get individual words tweetTokenizerSingleWord.py
@@ -22,8 +24,5 @@ Authors: Laura Stagnaro and Ian Byrne
 - For the project presentation to work, the notebook and packages are located in final_project. These will
 need to downloaded to the local machine. 
 - The data once accessed, should be downloaded to the same directory as those files.
-If simply cloning the repo, the CSVs will need to be placed in the final_project folder. From there all code within the final_project directory should work 
+If simply cloning this repository, the CSVs will need to be placed in the final_project folder. From there all code within the final_project directory should work 
 as expected. 
-
-## Data-Gathering-Scripts
-- 
