@@ -1,11 +1,12 @@
 '''
 Transforms the Johns Hopkins COVID time series data from wide format to long
-format merges this data with the Tweet sentiment scores and calculates additional
+format merges this data with the tweet sentiment scores and calculates additional
 information from the data.
 
 Keyword arguments:
 covidFile -- the filepath for the Johns Hopkins time series data
-allTweetsFile -- the filepath for all the Tweets. This is needed to get the sentiment scores.
+allTweetsFile -- the filepath for all the tweets before the are tokenized. 
+                This is needed to get the sentiment scores.
 
 Output:
 covidTimeSeries.csv -- a csv file with date, number of confirmed cases,
