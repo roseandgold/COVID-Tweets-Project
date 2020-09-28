@@ -15,6 +15,9 @@ nextTweet -- the index number of the Tweet in the file you want to start process
 numTweet -- the number of Tweets you want to process, needs to be a multiple of 100 or 
             or "All" if you want to get all tweets at once
 
+Output:
+tweet_data/covidTweets_(date_time).csv -- contains the tweet information
+
 Laura Stagnaro, Ian Byrne
 SIADS 591 & 592 Milestone I
 Coronavirus Tweet Analysis Project
