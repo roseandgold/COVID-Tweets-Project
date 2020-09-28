@@ -17,9 +17,9 @@ Authors: Laura Stagnaro and Ian Byrne
 - Combine all of the tweet data into one CSV combineTweetCSVs.py
     - Once you have populated all of the Tweet IDs please place those files in a directory called "tweet_data/". After that is done simply running this script should loop through the directory and combine all of the CSVs.
 - Grab the bi-grams for each tweet tweetTokenizer.py
-    - 
+    - Once you have the combined tweet file, you can run this script with the tweet file as argument to create bi-grams of the tweet body. 
 - Tokenize each tweet to get individual words tweetTokenizerSingleWord.py
-    - 
+    - Works the same as the above script except it outputs single words instead of bi-grams from the tweet body.
 - Daily covid case counts by country covidCountsCountryDay.py
     - 
 - Total cases per day covidTimeSeries.py
