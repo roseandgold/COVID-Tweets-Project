@@ -20,8 +20,10 @@ Authors: Laura Stagnaro and Ian Byrne
     - This script will loop through the 'tweet_data' directory and combine all of the CSVs.
 - Grab the bi-grams for each tweet tweetTokenizer.py
     - Once you have the combined tweet file, you can run this script with the tweet file as argument to create bi-grams of the tweet body. 
+    - Requires: nltk.download('stopwords'), nltk.download('wordnet')
 - Tokenize each tweet to get individual words tweetTokenizerSingleWord.py
     - Works the same as the above script except it outputs single words instead of bi-grams from the tweet body.
+    - Requires: nltk.download('stopwords'), nltk.download('wordnet')
 - Daily covid case counts by country covidCountsCountryDay.py
     - This script created the daily country COVID counts in long format. To run, pass the original JHU COVID CSV. 
 - Total cases per day covidTimeSeries.py
