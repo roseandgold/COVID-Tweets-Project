@@ -144,7 +144,7 @@ def main(tweetIdFile, nextTweet, numTweets):
                 from the nextTweet number to the end of list of tweet ids.
     
     Return:
-    twitterDf -- a dataframe with all necessary Twitter information
+    covidTweets_ csv file
     
     '''
     # Create the variables
