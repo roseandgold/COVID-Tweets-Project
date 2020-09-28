@@ -317,16 +317,15 @@ def emotion_facet():
                                   'counts': 'Mentions',
                                   'covid phase': 'Phase'}, inplace=True)
 
-    fig = px.bar(grouped_phase,
-             x="Phase",
-             y="Mentions",
-             #color='Phase',
-             #barmode="group",
-             facet_col="Term")
+    fig = px.bar(
+        grouped_phase,
+        x="Phase",
+        y="Mentions",
+        facet_col="Term")
 
     fig.update_layout(title='Emotionally indicative word mentions during each Phase')
     fig.update_traces(
-        marker_color = 'rgba(89, 171, 227, 1)',
-        opacity = .6
+        marker_color='rgba(89, 171, 227, 1)',
+        opacity=.6
     )
     fig.show()
