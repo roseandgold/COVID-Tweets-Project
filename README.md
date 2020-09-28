@@ -22,7 +22,7 @@ Authors: Laura Stagnaro and Ian Byrne
 - For the project presentation to work, the notebook and packages are located in final_project. These will
 need to downloaded to the local machine. 
 - The data once accessed, should be downloaded to the same directory as those files.
-If simply cloning the repo, the CSVs will need to be placed in the final_project folder. From there all code should work 
+If simply cloning the repo, the CSVs will need to be placed in the final_project folder. From there all code within the final_project directory should work 
 as expected. 
 
 ## Data-Gathering-Scripts
