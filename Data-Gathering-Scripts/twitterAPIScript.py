@@ -6,13 +6,14 @@ an original tweet or a re-tweet. The API call gathers up to 100 Tweets at a time
 Need to create a "tweet_data" folder so the script can output the CSVs to this folder.
 Need to create a text file named "twitterApiSecrets.txt" which includes:
     {"token": <token>, "tokenSecret": <token Secret>, "consumerKey": <consumer key>, 
-    "consumerSecret": <consumer secret}
+    "consumerSecret": <consumer secret>}
 
 Keyword arguments:
-tweetIdFile -- filepath to a csv which contains the Tweet Ids and sentiment scores
+tweetIdFile -- filepath to a csv which contains the tweet Ids and sentiment scores
 nextTweet -- the index number of the Tweet in the file you want to start processing
              needs to be a multiple of 100
-numTweet -- the number of Tweets you want to process, needs to be a multiple of 100
+numTweet -- the number of Tweets you want to process, needs to be a multiple of 100 or 
+            or "All" if you want to get all tweets at once
 
 Laura Stagnaro, Ian Byrne
 SIADS 591 & 592 Milestone I
@@ -64,10 +65,10 @@ def setupApi(tokenSecretFile):
     return api
 
 def getTweetIds(tweetIdFile):
-    '''Get the Tweet Ids to run through the Twitter Api as well as the sentiment scores for each Tweet.
+    '''Get the tweet Ids to run through the Twitter Api as well as the sentiment scores for each Tweet.
     
     Keyword arguments:
-    tweetIdFile -- csv filed which contains the Tweet id and sentiment score
+    tweetIdFile -- csv filed which contains the tweet id and sentiment score
     
     Return:
     tweetIdsList -- list of lists. Each list includes 100 tweet ids
@@ -136,11 +137,11 @@ def main(tweetIdFile, nextTweet, numTweets):
     one time.
     
     Keyword arguments:
-    tweetIdFile -- a csv file with Tweet Ids and sentiment score
+    tweetIdFile -- a csv file with tweet Ids and sentiment score
     tokenSecretFile -- a text file which includes a dictionary with Twitter token and consumer information
     nextTweet -- the next tweet you want to start at. Number needs to be multiple of 100.
-    numTweets -- the number of Tweets to process. Number needs to be a multiple of 100 or can use "All" to process all Tweets
-                from the nextTweet number to the end of list of Tweet ids.
+    numTweets -- the number of Tweets to process. Number needs to be a multiple of 100 or can use "All" to process all tweets
+                from the nextTweet number to the end of list of tweet ids.
     
     Return:
     twitterDf -- a dataframe with all necessary Twitter information
