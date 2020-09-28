@@ -1,6 +1,6 @@
 # COVID_Project
 
-SIADS 591/592 Milestone Project  
+SIADS 591/592 Milestone Project
 Authors: Laura Stagnaro and Ian Byrne
 
 ## Data Sources Used
