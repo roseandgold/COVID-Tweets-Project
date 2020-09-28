@@ -1,6 +1,6 @@
 '''
 Takes a CSV of Tweet ids, accesses the Twitter API to get the Tweet text,
-and returns a CSV with the date, text, location, language, hashtags, sentiment score and if it 
+and returns a CSV with the date, text, location, language, hashtags, sentiment score and if it is
 an original tweet or a re-tweet. The API call gathers up to 100 Tweets at a time.
 
 Need to create a "tweet_data" folder so the script can output the CSVs to this folder.
