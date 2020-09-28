@@ -21,9 +21,9 @@ Authors: Laura Stagnaro and Ian Byrne
 - Tokenize each tweet to get individual words tweetTokenizerSingleWord.py
     - Works the same as the above script except it outputs single words instead of bi-grams from the tweet body.
 - Daily covid case counts by country covidCountsCountryDay.py
-    - 
+    - This script created the daily country COVID counts in long format. To run, pass the original JHU COVID CSV. 
 - Total cases per day covidTimeSeries.py
-    - 
+    - Merges the COVID data with the tweet sentiment data. Also calculates 7 day rolling averages for number of cases, min-max scaled number of cases, sentiment score, and min-max scaled sentiment score. To run it will need two arguments, the original JHU COVID CSV and the CSV containing all of the tweets PRIOR to tokenization. 
 
 ## Final Project
 - For the project presentation to work, the notebook and packages are located in final_project. These will
