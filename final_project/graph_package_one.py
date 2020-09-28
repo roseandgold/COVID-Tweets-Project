@@ -301,3 +301,32 @@ def heatmap():
 
     fig.update_xaxes(side="top")
     fig.show()
+
+
+def emotion_facet():
+    df = read_day_counts()
+
+    words = ['bored', 'desolate', 'sad', 'worry', 'anger', 'depressed', 'miserable']
+
+    burn_ = df[df['tokenized'].isin(words)]
+
+    grouped_phase = burn_.groupby(['tokenized', 'covid phase']).sum()
+    grouped_phase.reset_index(inplace=True)
+    grouped_phase['covid phase'] = grouped_phase['covid phase'].str.strip().str[-1]
+    grouped_phase.rename(columns={'tokenized': 'Term',
+                                  'counts': 'Mentions',
+                                  'covid phase': 'Phase'}, inplace=True)
+
+    fig = px.bar(grouped_phase,
+             x="Phase",
+             y="Mentions",
+             #color='Phase',
+             #barmode="group",
+             facet_col="Term")
+
+    fig.update_layout(title='Emotionally indicative word mentions during each Phase')
+    fig.update_traces(
+        marker_color = 'rgba(89, 171, 227, 1)',
+        opacity = .6
+    )
+    fig.show()
