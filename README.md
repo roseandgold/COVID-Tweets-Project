@@ -1,6 +1,6 @@
 # COVID_Project
 
-SIADS 591/592 Milestone Project  
+SIADS 591/592 Milestone Project
 Authors: Laura Stagnaro and Ian Byrne
 
 ## Data Sources Used
@@ -18,5 +18,12 @@ Authors: Laura Stagnaro and Ian Byrne
 - Daily covid case counts by country covidCountsCountryDay.py
 - Total cases per day covidTimeSeries.py
 
-## Analysis
+## Final Project
+- For the project presentation to work, the notebook and packages are located in final_project. These will
+need to downloaded to the local machine. 
+- The data once accessed, should be downloaded to the same directory as those files.
+If simply cloning the repo, the CSVs will need to be placed in the final_project folder. From there all code within the final_project directory should work 
+as expected. 
 
+## Data-Gathering-Scripts
+- 
