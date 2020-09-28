@@ -15,7 +15,7 @@ Authors: Laura Stagnaro and Ian Byrne
 - Retrieve the full tweets from the Twitter API using the combined Tweet IDs with twitterAPIScript.py
     - This script should be in a directory containing another directory named 'tweet_data'. All tweet CSVs will output to this directory.
     - For this to work correctly the user will need to have Twitter Developer API credentials in a file titled 'twitterAPISecrets.txt' which includes: {"token": token, "tokenSecret": token secret, "consumerKey": consumer key, "consumerSecret": consumer secret}  
-    -Pass the script the name of the file with the Tweet IDs that was created with one_perc_sample.py, the start index (0 on the first run), and how many ID's you want to populate on that run. After the run is complete the script will output where it left off to be passed as the start index argument on the next run. 
+    - Pass the script the name of the file with the Tweet IDs that was created with one_perc_sample.py, the start index (0 on the first run), and how many ID's you want to populate on that run. After the run is complete the script will output where it left off to be passed as the start index argument on the next run. 
 - Combine all of the tweet data into one CSV combineTweetCSVs.py
     - This script will loop through the 'tweet_data' directory and combine all of the CSVs.
 - Grab the bi-grams for each tweet tweetTokenizer.py
